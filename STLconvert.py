@@ -10,12 +10,13 @@
 import sys
 import io
 
-print("Convert a .stl file to .srt")
-
-filename = sys.argv[1]
+if len(sys.argv)==2:
+	filename = sys.argv[1]
+else:
+	print("please supply a filename as a command line argument")
+	exit()
 inputList = []
 outputList = []
-
 
 def formatTC(timecode):
 	timecode = timecode.replace(';',':')
@@ -40,18 +41,24 @@ def parsefile(filename):
 			TCin = formatTC(TCin)
 			TCout = formatTC(TCout)
 			TCline = TCin+" --> "+TCout
-			print TCline
 
 			outputList.append([lineNumber])
 			outputList.append([TCline])
+			print("formatted: "+line[0]+" =>> "+TCline)
 		else:
 			outputList.append(line)
 
 	with open(filename[:-4]+'_converted.srt','w') as outputFile:
+		print("outputting file as: "+filename[:-4]+'_converted.srt')
 		for e in outputList:
 			outputFile.write("%s\n" % e[0])
 
 def main(filename):
+	if(".stl" not in filename):
+		print("Invalid filename. Remember to include the .stl extension!")
+		return
+	print("opening: "+filename+"\n")
 	parsefile(filename)
+	print("\nComplete! Always remember to have fun.")
 
 main(filename)
