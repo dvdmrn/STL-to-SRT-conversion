@@ -1,5 +1,6 @@
 # STL-to-SRT-conversion
 ### Converts an .stl closed captioning file to .srt format
+*This hasn't been robustly tested, let me know if there are any errors!*
 
 # Requres:
 - Python >= 2.7
