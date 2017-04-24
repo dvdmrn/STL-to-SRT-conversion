@@ -1,0 +1,7 @@
+1
+00:00:00,000 --> 00:00:05,000
+Here's the script text.
+
+2
+00:00:05,042 --> 00:00:05,250
+Here's some more text.

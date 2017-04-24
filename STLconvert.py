@@ -18,15 +18,19 @@ else:
 inputList = []
 outputList = []
 
-def formatTC(timecode):
+def formatTC(timecode,fps):
 	timecode = timecode.replace(';',':')
-	timecode = timecode+"0"
+	frames = timecode[-2:]
+	if(float(frames)>=float(fps)):
+		print("\n    --warning--\n    timecode `"+timecode+"` frame index exceeds or is equal to framerate.\n")
+	framesToMs = "{0:.3f}".format(float(frames)/float(fps))[-3:]
+	timecode = timecode[:-2]+framesToMs
 	Slist = list(timecode)
 	Slist[8] = ","
 	timecode = "".join(Slist)
 	return timecode
 
-def parsefile(filename):
+def parsefile(filename,fps):
 	lineNumber = 0
 	with open(filename) as inputfile:
 	    for line in inputfile:
@@ -38,8 +42,8 @@ def parsefile(filename):
 			line[0].replace(";",":")
 			TCin = line[0][:11]
 			TCout = line[0][12:23]
-			TCin = formatTC(TCin)
-			TCout = formatTC(TCout)
+			TCin = formatTC(TCin,fps)
+			TCout = formatTC(TCout,fps)
 			TCline = TCin+" --> "+TCout
 
 			outputList.append([lineNumber])
@@ -57,8 +61,14 @@ def main(filename):
 	if(".stl" not in filename):
 		print("Invalid filename. Remember to include the .stl extension!")
 		return
+	fps = raw_input('enter framerate: ')
+	try:
+		float(fps)
+	except Exception as e:
+		print("Invalid framerate.")
+		return
 	print("opening: "+filename+"\n")
-	parsefile(filename)
+	parsefile(filename,fps)
 	print("\nComplete! Always remember to have fun.")
 
 main(filename)
