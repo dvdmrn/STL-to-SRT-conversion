@@ -14,4 +14,5 @@
 - STLconvert.exe will output your new .srt file in the same folder that STLconvert.exe is living in, and will name it `<NAME_OF_YOUR_OLD_STL_FILE>_converted.srt`
 
 ### Troubleshooting:
-- If you are using a windows computer you will need python in your path.
+- Make sure to include the file extension when inputting the file path.
+- If you run into any problems be sure to add them onto the issues tab so we can list them here, and solve it!
