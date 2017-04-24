@@ -15,4 +15,4 @@
 
 ### Troubleshooting:
 - Make sure to include the file extension when inputting the file path.
-- If you run into any problems be sure to add them onto the issues tab so we can list them here, and solve it!
+- If you run into any problems be sure to add them onto the issues tab so we can list them here, and solve it! Of particular concern is the validity of the translation between .stl and .srt files since I have not accounted for formatting or anything beyond basic timecode and dialogue markup. This script also assumes that your .stl file is not compressed in any way (i.e. whitespace and line breaks matter).
