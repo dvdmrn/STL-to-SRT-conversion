@@ -1,5 +1,10 @@
-00;00;00;00 00;00;05;00
-Here's the script text.
+@ This file written with the Avid Caption plugin, version 1
 
-00;00;05;01 00;00;05;30
-Here's some more text.
+<begin subtitles>
+01;00;00;00 01;00;05;22
+Here's some filler text.
+
+01;00;05;23 01;00;06;10
+"Here's dialogue, with like, commas, and stuff", said someone.
+
+<end subtitles>

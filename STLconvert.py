@@ -1,9 +1,10 @@
 """
-	Converts a .stl subtitle file into a .srt file
-	HOW TO USE:
-		Open a terminal window and type: `python STLconvert.py <YOUR_FILE_NAME>`
-			>Example: python STLconvert.py myClosedCaptioningFile.srt
-		Be sure to include the file extension!
+    Converts a .stl subtitle file into a .srt file
+    HOW TO USE:
+        1. Open a terminal window and type: `python STLconvert.py``
+        2. Enter the file path
+        3. Enter the project's framerate
+        4. The converted file will be outputted in this folder.
 """
 
 
@@ -13,58 +14,69 @@ import sys
 inputList = []
 outputList = []
 
+ignoreList = [
+             "@ This file written",
+             "<begin subtitles>",
+             "<end subtitles>",
+             ]
+title = "  __ _____ _      __     __  ___ _____              \n/' _/_   _| |    _\ \  /' _/| _ \_   _|             \n`._`. | | | |_  |__  | `._`.| v / | |               \n|___/ |_| |___|  _/_/_ |___/|_|_\ |_| _  __  __  _  \n / _//__\|  \| || \ / || __| _ \/' _/| |/__\|  \| | \n| \_| \/ | | ' |`\ V /'| _|| v /`._`.| | \/ | | ' | \n \__/\__/|_|\__|  \_/  |___|_|_\|___/|_|\__/|_|\__|"
 def formatTC(timecode,fps):
-	timecode = timecode.replace(';',':')
-	frames = timecode[-2:]
-	if(float(frames)>=float(fps)):
-		print("\n    --warning--\n    timecode `"+timecode+"` frame index exceeds or is equal to framerate.\n")
-	framesToMs = "{0:.3f}".format(float(frames)/float(fps))[-3:]
-	timecode = timecode[:-2]+framesToMs
-	Slist = list(timecode)
-	Slist[8] = ","
-	timecode = "".join(Slist)
-	return timecode
+    timecode = timecode.replace(';',':')
+    frames = timecode[-2:]
+    if(float(frames)>=float(fps)):
+        print("\n    --warning--\n    timecode `"+timecode+"` frame index exceeds or is equal to framerate.\n")
+    framesToMs = "{0:.3f}".format(float(frames)/float(fps))[-3:]
+    timecode = timecode[:-2]+framesToMs
+    Slist = list(timecode)
+    Slist[8] = ","
+    timecode = "".join(Slist)
+    return timecode
 
 def parsefile(filename,fps):
-	lineNumber = 0
-	with open(filename) as inputfile:
-	    for line in inputfile:
-	        inputList.append(line.strip().split(','))
+    lineNumber = 0
+    with open(filename) as inputfile:
+        for line in inputfile:
+            inputList.append(line.strip())
 
-	for line in inputList:
-		if ';' in line[0]:
-			lineNumber += 1
-			line[0].replace(";",":")
-			TCin = line[0][:11]
-			TCout = line[0][12:23]
-			TCin = formatTC(TCin,fps)
-			TCout = formatTC(TCout,fps)
-			TCline = TCin+" --> "+TCout
+    for line in inputList:
+        if ';' in line:
+            lineNumber += 1
+            TCin = line[:11]
+            TCout = line[12:23]
+            TCin = formatTC(TCin,fps)
+            TCout = formatTC(TCout,fps)
+            TCline = TCin+" --> "+TCout
 
-			outputList.append([lineNumber])
-			outputList.append([TCline])
-			print("formatted: "+line[0]+" =>> "+TCline)
-		else:
-			outputList.append(line)
+            outputList.append(lineNumber)
+            outputList.append(TCline)
+            print("formatted: "+line+" =>> "+TCline)
+        else:
+            outputList.append(line)
 
-	with open(filename[:-4]+'_converted.srt','w') as outputFile:
-		print("\n........................................\noutputting file as: "+filename[:-4]+'_converted.srt\n........................................')
-		for e in outputList:
-			outputFile.write("%s\n" % e[0])
+    with open(filename[:-4]+'_converted.srt','w') as outputFile:
+        print("\n........................................\noutputting file as: "+filename[:-4]+'_converted.srt\n........................................')
+        for e in outputList:
+            write = True
+            for item in ignoreList:
+                if item in str(e):
+                    write=False
+            if(write):
+                outputFile.write("%s\n" % e)
 
 def main():
-	filename = raw_input('enter file path: ')
-	if(".stl" not in filename):
-		print("Invalid filename. Remember to include the .stl extension!")
-		return
-	fps = raw_input('enter framerate: ')
-	try:
-		float(fps)
-	except Exception as e:
-		print("Invalid framerate.")
-		return
-	print("\n========================================\nopening: "+filename+"\n")
-	parsefile(filename,fps)
-	raw_input("\n========================================\nComplete! Always remember to have fun.")
+    print(title)
+    filename = raw_input('enter file path: ')
+    if(".stl" not in filename):
+        print("Invalid filename. Remember to include the .stl extension!")
+        return
+    fps = raw_input('enter framerate: ')
+    try:
+        float(fps)
+    except Exception as e:
+        print("Invalid framerate.")
+        return
+    print("\n========================================\nopening: "+filename+"\n")
+    parsefile(filename,fps)
+    raw_input("\n========================================\nComplete! Always remember to have fun.")
 
 main()
