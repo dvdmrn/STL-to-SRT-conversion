@@ -8,13 +8,8 @@
 
 
 import sys
-import io
+# import io
 
-if len(sys.argv)==2:
-	filename = sys.argv[1]
-else:
-	print("please supply a filename as a command line argument")
-	exit()
 inputList = []
 outputList = []
 
@@ -53,11 +48,12 @@ def parsefile(filename,fps):
 			outputList.append(line)
 
 	with open(filename[:-4]+'_converted.srt','w') as outputFile:
-		print("outputting file as: "+filename[:-4]+'_converted.srt')
+		print("\n........................................\noutputting file as: "+filename[:-4]+'_converted.srt\n........................................')
 		for e in outputList:
 			outputFile.write("%s\n" % e[0])
 
-def main(filename):
+def main():
+	filename = raw_input('enter file path: ')
 	if(".stl" not in filename):
 		print("Invalid filename. Remember to include the .stl extension!")
 		return
@@ -67,8 +63,8 @@ def main(filename):
 	except Exception as e:
 		print("Invalid framerate.")
 		return
-	print("opening: "+filename+"\n")
+	print("\n========================================\nopening: "+filename+"\n")
 	parsefile(filename,fps)
-	print("\nComplete! Always remember to have fun.")
+	raw_input("\n========================================\nComplete! Always remember to have fun.")
 
-main(filename)
+main()

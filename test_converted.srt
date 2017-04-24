@@ -3,5 +3,5 @@
 Here's the script text.
 
 2
-00:00:05,042 --> 00:00:05,250
+00:00:05,017 --> 00:00:05,500
 Here's some more text.
